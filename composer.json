@@ -1,0 +1,20 @@
+{
+    "name": "drmsugano/sistema-estacionamento",
+    "autoload": {
+        "psr-4": {
+            "Entities\\": "app/entity/",
+            "Controller\\": "app/controller/",
+            "Dao\\": "app/entity/dao/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Douglas Sugano",
+            "email": "50459465+Drmsugano@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "doctrine/orm": "^3.3",
+        "symfony/cache": "^6.0"
+    }
+}
