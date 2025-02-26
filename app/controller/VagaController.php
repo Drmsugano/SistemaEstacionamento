@@ -1,6 +1,7 @@
 <?php
 namespace Controller;
 
+use Dao\SetorDao;
 use Dao\VagaDao;
 use Entities\Vaga;
 
@@ -14,10 +15,18 @@ class VagaController extends Controller
         include("../app/view/module/vaga/vagaListar.php");
     }
 
-    public static function form()
+    public static function form($entityManager)
     {
         parent::isProtected();
-        include("../app/view/module/vaga/vagaCadastrar.php");
+        $setorDao = new SetorDao();
+        $setores = $setorDao->read_all($entityManager);
+        if (isset($_GET['id'])) {
+            $id = (int) $_GET['id'];
+            $vaga = $entityManager->find('Entities\\Vaga', $id);
+        } else {
+            $vaga = null;
+        }
+        include("../app/view/module/vaga/vagaForm.php");
     }
 
     public static function create($entityManager)
@@ -28,9 +37,9 @@ class VagaController extends Controller
             $vaga->estado = (int) $_POST["estado"];
             $vaga->tempoOcupada = (int) $_POST["tempoOcupada"];
             $vaga->vezesOcupada = (int) $_POST["vezesOcupada"];
-            $vaga->setor = $entityManager->find('Entities\Setor', (int) $_POST["setor_u"]);
+            $vaga->setor = $entityManager->find('Entities\Setor', (int) $_POST["setor_id"]);
             if ($dao->create($entityManager, $vaga)) {
-                header("location: /Vaga");
+                header("location: /vaga");
             } else {
                 echo '<script type="text/javascript">alert("Erro em cadastrar");</script>';
             }
@@ -46,9 +55,9 @@ class VagaController extends Controller
             $vaga->estado = (int) $_POST["estado"];
             $vaga->tempoOcupada = (int) $_POST["tempoOcupada"];
             $vaga->vezesOcupada = (int) $_POST["vezesOcupada"];
-            $vaga->setor = $entityManager->find('Entities\Setor', (int) $_POST["setor_u"]);
+            $vaga->setor = $entityManager->find('Entities\Setor', (int) $_POST["setor_id"]);
             if ($dao->update($entityManager, $vaga)) {
-                header("location: /Vaga");
+                header("location: /vaga");
             } else {
                 echo '<script type="text/javascript">alert("Erro em Alterar");</script>';
             }
@@ -62,7 +71,7 @@ class VagaController extends Controller
             $vaga = new Vaga();
             $vaga->id = (int) $_REQUEST['id'];
             if ($dao->delete($entityManager, $vaga->id)) {
-                header("Location: /Vaga");
+                header("Location: /vaga");
             } else {
                 echo '<script type="text/javascript">alert("Erro em Deletar");</script>';
             }

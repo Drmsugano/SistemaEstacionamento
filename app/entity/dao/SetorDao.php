@@ -19,14 +19,14 @@ class SetorDao extends Dao
 
     public function read_all($entityManager)
     {
-        $setorRepository = $entityManager->getRepository('Entity\\Setor');
+        $setorRepository = $entityManager->getRepository('Entities\\Setor');
         $setores = $setorRepository->findAll();
         return $setores;
     }
 
     public function read($entityManager, $id)
     {
-        $query = $entityManager->createQuery('SELECT s FROM Entity\Setor s WHERE s.id = :id');
+        $query = $entityManager->createQuery('SELECT s FROM Entities\Setor s WHERE s.id = :id');
         $query->setParameter('id', $id);
         $setor = $query->getResult();
         return $setor;
@@ -34,7 +34,7 @@ class SetorDao extends Dao
 
     public function update($entityManager, $setorAlt)
     {
-        $setor = $entityManager->find('Entity\\Setor', $setorAlt->id);
+        $setor = $entityManager->find('Entities\\Setor', $setorAlt->id);
         $setor->numVagasTotal = $setorAlt->numVagasTotal;
         $setor->numVagasOcupadas = $setorAlt->numVagasOcupadas;
         $setor->estacionamento = $setorAlt->estacionamento;
@@ -48,7 +48,7 @@ class SetorDao extends Dao
 
     public function delete($entityManager, $id)
     {
-        $setor = $entityManager->find('Entity\\Setor', $id);
+        $setor = $entityManager->find('Entities\\Setor', $id);
         try {
             $entityManager->remove($setor);
             $entityManager->flush();

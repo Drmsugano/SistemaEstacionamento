@@ -14,10 +14,16 @@ class EstacionamentoController extends Controller
         include("../app/view/module/estacionamento/estacionamentoListar.php");
     }
 
-    public static function form()
+    public static function form($entityManager)
     {
         parent::isProtected();
-        include("../app/view/module/estacionamento/estacionamentoCadastrar.php");
+        if (isset($_GET['id'])) {
+            $id = (int) $_GET['id'];
+            $estacionamento = $entityManager->find('Entities\\Estacionamento', $id);
+        } else {
+            $estacionamento = null;
+        }
+        include("../app/view/module/estacionamento/estacionamentoForm.php");
     }
 
     public static function create($entityManager)
@@ -28,7 +34,7 @@ class EstacionamentoController extends Controller
             $estacionamento->nome = $_POST["nome"];
             $estacionamento->dataUltimoRelatorio = new \DateTime($_POST['dataUltimoRelatorio']);
             if ($dao->create($entityManager, $estacionamento)) {
-                header("location: /Estacionamento");
+                header("location: /estacionamento");
             } else {
                 echo '<script type="text/javascript">alert("Erro em cadastrar");</script>';
             }
@@ -44,7 +50,7 @@ class EstacionamentoController extends Controller
             $estacionamento->nome = $_POST["nome"];
             $estacionamento->dataUltimoRelatorio = new \DateTime($_POST['dataUltimoRelatorio']);
             if ($dao->update($entityManager, $estacionamento)) {
-                header("location: /Estacionamento");
+                header("location: /estacionamento");
             } else {
                 echo '<script type="text/javascript">alert("Erro em Alterar");</script>';
             }
@@ -58,7 +64,7 @@ class EstacionamentoController extends Controller
             $estacionamento = new Estacionamento();
             $estacionamento->id = (int) $_REQUEST['id'];
             if ($dao->delete($entityManager, $estacionamento->id)) {
-                header("Location: /Estacionamento");
+                header("Location: /estacionamento");
             } else {
                 echo '<script type="text/javascript">alert("Erro em Deletar");</script>';
             }

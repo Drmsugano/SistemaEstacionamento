@@ -3,6 +3,7 @@ namespace Controller;
 
 use Dao\TicketDao;
 use Entities\Ticket;
+use Dao\EstacionamentoDao;
 
 class TicketController extends Controller
 {
@@ -14,10 +15,18 @@ class TicketController extends Controller
         include("../app/view/module/ticket/ticketListar.php");
     }
 
-    public static function form()
+    public static function form($entityManager)
     {
         parent::isProtected();
-        include("../app/view/module/ticket/ticketCadastrar.php");
+        $estacionamentoDao = new EstacionamentoDao();
+        $estacionamentos = $estacionamentoDao->read_all($entityManager);
+        if (isset($_GET['id'])) {
+            $id = (int) $_GET['id'];
+            $ticket = $entityManager->find('Entities\\Ticket', $id);
+        } else {
+            $ticket = null;
+        }
+        include("../app/view/module/ticket/ticketForm.php");
     }
 
     public static function create($entityManager)
@@ -27,9 +36,9 @@ class TicketController extends Controller
             $ticket = new Ticket();
             $ticket->codBarras = (int) $_POST["codBarras"];
             $ticket->estado = (int) $_POST["estado"];
-            $ticket->estacionamento = $entityManager->find('Entities\Estacionamento', (int) $_POST["estacionamento_u"]);
+            $ticket->estacionamento = $entityManager->find('Entities\Estacionamento', (int) $_POST["estacionamento_id"]);
             if ($dao->create($entityManager, $ticket)) {
-                header("location: /Ticket");
+                header("location: /ticket");
             } else {
                 echo '<script type="text/javascript">alert("Erro em cadastrar");</script>';
             }
@@ -46,7 +55,7 @@ class TicketController extends Controller
             $ticket->estado = (int) $_POST["estado"];
             $ticket->estacionamento = $entityManager->find('Entities\Estacionamento', (int) $_POST["estacionamento_id"]);
             if ($dao->update($entityManager, $ticket)) {
-                header("location: /Ticket");
+                header("location: /ticket");
             } else {
                 echo '<script type="text/javascript">alert("Erro em Alterar");</script>';
             }
@@ -60,7 +69,7 @@ class TicketController extends Controller
             $ticket = new Ticket();
             $ticket->id = (int) $_REQUEST['id'];
             if ($dao->delete($entityManager, $ticket->id)) {
-                header("Location: /Ticket");
+                header("Location: /ticket");
             } else {
                 echo '<script type="text/javascript">alert("Erro em Deletar");</script>';
             }

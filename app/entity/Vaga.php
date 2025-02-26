@@ -25,7 +25,7 @@ class Vaga
     #[Column(type: "integer")]
     private $vezesOcupada;
 
-    #[ManyToOne(targetEntity: Setor::class, inversedBy: "vagas")]
+    #[ManyToOne(targetEntity: Setor::class, cascade: ['persist'], fetch: 'EAGER')]
     #[JoinColumn(name: "setor_id", referencedColumnName: "id")]
     private $setor;
 

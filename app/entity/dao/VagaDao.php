@@ -19,14 +19,14 @@ class VagaDao extends Dao
 
     public function read_all($entityManager)
     {
-        $vagaRepository = $entityManager->getRepository('Entity\\Vaga');
+        $vagaRepository = $entityManager->getRepository('Entities\\Vaga');
         $vagas = $vagaRepository->findAll();
         return $vagas;
     }
 
     public function read($entityManager, $id)
     {
-        $query = $entityManager->createQuery('SELECT v FROM Entity\Vaga v WHERE v.id = :id');
+        $query = $entityManager->createQuery('SELECT v FROM Entities\Vaga v WHERE v.id = :id');
         $query->setParameter('id', $id);
         $vaga = $query->getResult();
         return $vaga;
@@ -34,7 +34,7 @@ class VagaDao extends Dao
 
     public function update($entityManager, $vagaAlt)
     {
-        $vaga = $entityManager->find('Entity\\Vaga', $vagaAlt->id);
+        $vaga = $entityManager->find('Entities\\Vaga', $vagaAlt->id);
         $vaga->estado = $vagaAlt->estado;
         $vaga->tempoOcupada = $vagaAlt->tempoOcupada;
         $vaga->vezesOcupada = $vagaAlt->vezesOcupada;
@@ -49,7 +49,7 @@ class VagaDao extends Dao
 
     public function delete($entityManager, $id)
     {
-        $vaga = $entityManager->find('Entity\\Vaga', $id);
+        $vaga = $entityManager->find('Entities\\Vaga', $id);
         try {
             $entityManager->remove($vaga);
             $entityManager->flush();

@@ -22,7 +22,7 @@ class Ticket
     #[Column(type: "integer")]
     private $estado;
 
-    #[ManyToOne(targetEntity: Estacionamento::class, inversedBy: "tickets")]
+    #[ManyToOne(targetEntity: Estacionamento::class, cascade: ['persist'], fetch: 'EAGER')]
     #[JoinColumn(name: "estacionamento_id", referencedColumnName: "id")]
     private $estacionamento;
 

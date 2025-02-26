@@ -11,8 +11,12 @@ $url = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 switch($url) {
     // Autenticação
-    case '/login':
-        LoginController::login();
+    case '/':
+        if (isset($_SESSION['usuario_logado'])) {
+            HomeController::index();
+        } else {
+            LoginController::login();
+        }
         break;
 
     case '/autenticar':
@@ -34,7 +38,7 @@ switch($url) {
         break;
 
     case "/estacionamento/form":
-        EstacionamentoController::form();
+        EstacionamentoController::form($entityManager);
         break;
 
     case "/estacionamento/form/create":
@@ -55,7 +59,7 @@ switch($url) {
         break;
 
     case "/setor/form":
-        SetorController::form();
+        SetorController::form($entityManager);
         break;
 
     case "/setor/form/create":
@@ -76,7 +80,7 @@ switch($url) {
         break;
 
     case "/vaga/form":
-        VagaController::form();
+        VagaController::form($entityManager);
         break;
 
     case "/vaga/form/create":
@@ -97,7 +101,7 @@ switch($url) {
         break;
 
     case "/ticket/form":
-        TicketController::form();
+        TicketController::form($entityManager);
         break;
 
     case "/ticket/form/create":
